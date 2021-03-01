@@ -1,0 +1,22 @@
+TESTPROGRAM = EdgeConnectorTest
+MAINPROGRAM = RunEdgeConvert
+
+compile :
+	javac -d build -cp lib/junit-4.12.jar:lib/hamcrest-core-1.3.jar src/main/java/*.java src/test/java/*.java
+
+testing : build/$(TESTPROGRAM).class
+	make -f Makefile.proj compile
+	java -cp build/:lib/junit-4.12.jar:lib/hamcrest-core-1.3.jar org.junit.runner.JUnitCore $(TESTPROGRAM)
+
+runApp : build/$(MAINPROGRAM).class
+	make -f Makefile.proj compile
+	java -cp build/ $(MAINPROGRAM)
+
+clean :
+	rm build/*.class
+
+all :
+	make -f Makefile.proj clean
+	make -f Makefile.proj compile
+	make -f Makefile.proj testing
+	make -f Makefile.proj runApp
